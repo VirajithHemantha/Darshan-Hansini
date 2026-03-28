@@ -13,11 +13,11 @@ function doPost(e) {
     const sheet = getOrCreateSheet_(ss, sheetKey);
 
     if (sheetKey === 'RSVP') {
-      ensureHeaders_(sheet, ['Timestamp', 'Name', 'Email', 'Guests', 'Attendance', 'DietaryRestrictions']);
+      ensureHeaders_(sheet, ['Timestamp', 'Name', 'Phone', 'Guests', 'Attendance', 'DietaryRestrictions']);
       sheet.appendRow([
         new Date(),
         payload.name || '',
-        payload.email || '',
+        payload.phone || payload.email || '',
         payload.guests || '',
         payload.attendance || '',
         payload.dietaryRestrictions || '',

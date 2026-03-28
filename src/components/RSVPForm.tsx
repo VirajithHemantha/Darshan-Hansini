@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 
 interface RSVPFormData {
   name: string;
-  email: string;
+  phone: string;
   guests: string;
   attendance: 'yes' | 'no';
   dietaryRestrictions: string;
@@ -28,7 +28,7 @@ export function RSVPForm() {
       const payload = new FormData();
       payload.append('sheet', 'RSVP');
       payload.append('name', data.name);
-      payload.append('email', data.email);
+      payload.append('phone', data.phone);
       payload.append('guests', data.guests);
       payload.append('attendance', data.attendance);
       payload.append('dietaryRestrictions', data.dietaryRestrictions || '');
@@ -79,24 +79,24 @@ export function RSVPForm() {
           )}
         </div>
 
-        {/* Email Field */}
+        {/* Phone Field */}
         <div>
           <label className="block text-sm font-serif text-gray-700 mb-2">
-            Email Address *
+            Phone Number *
           </label>
           <input
-            {...register('email', {
-              required: 'Email is required',
+            {...register('phone', {
+              required: 'Phone number is required',
               pattern: {
-                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: 'Invalid email address'
+                value: /^\+?[0-9\s-]{9,15}$/,
+                message: 'Invalid phone number'
               }
             })}
             className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-[#D4AF37] focus:outline-none transition-colors bg-white"
-            placeholder="your@email.com"
+            placeholder="0771234567"
           />
-          {errors.email && (
-            <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+          {errors.phone && (
+            <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>
           )}
         </div>
 
