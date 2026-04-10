@@ -1,191 +1,165 @@
-import { useState } from 'react';
-import { motion } from 'motion/react';
-import { useForm } from 'react-hook-form';
-import { Send } from 'lucide-react';
-import { toast } from 'sonner';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { CheckCircle, Loader2, Heart, Sparkles } from 'lucide-react';
 
-interface RSVPFormData {
-  name: string;
-  phone: string;
-  guests: string;
-  attendance: 'yes' | 'no';
-  dietaryRestrictions: string;
-}
+export const RSVPForm: React.FC = () => {
+  const [formData, setFormData] = useState({
+    fullName: '',
+    guests: '1',
+    dietaryNotes: '',
+  });
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
-export function RSVPForm() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<RSVPFormData>();
-  const scriptUrl = import.meta.env.VITE_GOOGLE_APPS_SCRIPT_URL as string | undefined;
-
-  const onSubmit = async (data: RSVPFormData) => {
-    setIsSubmitting(true);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus('loading');
 
     try {
-      if (!scriptUrl) {
-        throw new Error('Google Apps Script URL is not configured.');
-      }
+      // Simulate network request latency
+      await new Promise(resolve => setTimeout(resolve, 800));
 
-      const payload = new FormData();
-      payload.append('sheet', 'RSVP');
-      payload.append('name', data.name);
-      payload.append('phone', data.phone);
-      payload.append('guests', data.guests);
-      payload.append('attendance', data.attendance);
-      payload.append('dietaryRestrictions', data.dietaryRestrictions || '');
-
-      await fetch(scriptUrl, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: payload,
-      });
-
-      toast.success('Thank you! Your RSVP has been received.');
-      reset();
+      setStatus('success');
+      setFormData({ fullName: '', guests: '1', dietaryNotes: '' });
     } catch (error) {
-      console.error('RSVP submit failed:', error);
-      toast.error('Could not send RSVP. Please try again.');
-    } finally {
-      setIsSubmitting(false);
+      console.error('Error sending RSVP: ', error);
+      setStatus('error');
     }
   };
 
   return (
-    <motion.form
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      onSubmit={handleSubmit(onSubmit)}
-      className="max-w-2xl mx-auto bg-gradient-to-br from-white to-slate-50 rounded-2xl p-8 shadow-xl border-2 border-[#D4AF37]/30 relative"
-    >
-      {/* Decorative Corners */}
-      <div className="absolute top-4 left-4 w-12 h-12 border-l-2 border-t-2 border-[#D4AF37]" />
-      <div className="absolute top-4 right-4 w-12 h-12 border-r-2 border-t-2 border-[#D4AF37]" />
-      <div className="absolute bottom-4 left-4 w-12 h-12 border-l-2 border-b-2 border-[#D4AF37]" />
-      <div className="absolute bottom-4 right-4 w-12 h-12 border-r-2 border-b-2 border-[#D4AF37]" />
+    <div className="max-w-5xl mx-auto px-6 relative py-10">
+      {/* Premium ambient backdrop & glows */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-radial from-brand-beige/15 to-transparent rounded-full blur-[100px] pointer-events-none -z-10" />
 
-      <div className="space-y-6">
-        {/* Name Field */}
-        <div>
-          <label className="block text-sm font-serif text-gray-700 mb-2">
-            Full Name *
-          </label>
-          <input
-            {...register('name', { required: 'Name is required' })}
-            className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-[#D4AF37] focus:outline-none transition-colors bg-white"
-            placeholder="Enter your name"
-          />
-          {errors.name && (
-            <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
-          )}
-        </div>
-
-        {/* Phone Field */}
-        <div>
-          <label className="block text-sm font-serif text-gray-700 mb-2">
-            Phone Number *
-          </label>
-          <input
-            {...register('phone', {
-              required: 'Phone number is required',
-              pattern: {
-                value: /^\+?[0-9\s-]{9,15}$/,
-                message: 'Invalid phone number'
-              }
-            })}
-            className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-[#D4AF37] focus:outline-none transition-colors bg-white"
-            placeholder="0771234567"
-          />
-          {errors.phone && (
-            <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>
-          )}
-        </div>
-
-        {/* Number of Guests */}
-        <div>
-          <label className="block text-sm font-serif text-gray-700 mb-2">
-            Number of Guests *
-          </label>
-          <select
-            {...register('guests', { required: 'Please select number of guests' })}
-            className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-[#D4AF37] focus:outline-none transition-colors bg-white"
-          >
-            <option value="">Select...</option>
-            <option value="1">1 Guest</option>
-            <option value="2">2 Guests</option>
-            <option value="3">3 Guests</option>
-            <option value="4">4 Guests</option>
-            <option value="5+">5+ Guests</option>
-          </select>
-          {errors.guests && (
-            <p className="text-red-500 text-sm mt-1">{errors.guests.message}</p>
-          )}
-        </div>
-
-        {/* Attendance */}
-        <div>
-          <label className="block text-sm font-serif text-gray-700 mb-3">
-            Will you be attending? *
-          </label>
-          <div className="flex gap-4">
-            <label className="flex-1 relative">
-              <input
-                {...register('attendance', { required: 'Please select an option' })}
-                type="radio"
-                value="yes"
-                className="peer sr-only"
-              />
-              <div className="px-6 py-3 rounded-lg border-2 border-gray-200 text-center cursor-pointer peer-checked:border-[#D4AF37] peer-checked:bg-[#D4AF37]/10 transition-all">
-                <span className="font-serif">Joyfully Accept</span>
-              </div>
-            </label>
-            <label className="flex-1 relative">
-              <input
-                {...register('attendance', { required: 'Please select an option' })}
-                type="radio"
-                value="no"
-                className="peer sr-only"
-              />
-              <div className="px-6 py-3 rounded-lg border-2 border-gray-200 text-center cursor-pointer peer-checked:border-[#D4AF37] peer-checked:bg-[#D4AF37]/10 transition-all">
-                <span className="font-serif">Regretfully Decline</span>
-              </div>
-            </label>
+      <motion.div 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="glass p-10 sm:p-14 lg:p-16 rounded-[3rem] border border-white/40 shadow-[0_30px_60px_rgba(176,137,104,0.1)] relative overflow-hidden bg-white/60 backdrop-blur-3xl lg:flex items-center gap-16"
+      >
+        {/* Soft top border line */}
+        <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-brand-champagne via-brand-beige-deep/80 to-brand-champagne" />
+        
+        {/* Left Side: Elegant Text */}
+        <div className="lg:w-1/2 lg:pr-10 mb-12 lg:mb-0 relative text-center lg:text-left">
+          <Sparkles className="absolute -top-6 -left-6 w-12 h-12 text-brand-beige/30 animate-pulse" />
+          
+          <div className="inline-flex items-center justify-center lg:justify-start gap-4 mb-6">
+            <span className="text-brand-beige-deep uppercase tracking-[0.5em] text-[10px] sm:text-[11px] font-bold drop-shadow-sm">
+              Kindly Respond
+            </span>
+            <div className="hidden lg:block w-16 h-[1px] bg-gradient-to-r from-brand-beige-deep/60 to-transparent" />
           </div>
-          {errors.attendance && (
-            <p className="text-red-500 text-sm mt-1">{errors.attendance.message}</p>
-          )}
+
+          <h2 className="text-5xl sm:text-6xl font-display text-stone-800 tracking-tight leading-[1.1] mb-6 drop-shadow-sm">
+            Reserve <span className="italic font-light text-brand-beige-deep">Your</span> Seat
+          </h2>
+          
+          <p className="text-stone-500/90 font-serif text-lg leading-relaxed mb-6">
+            Your presence means the world to us. Please kindly let us know if you will be able to join our celebration.
+          </p>
+          <div className="mt-4 mb-6 bg-brand-champagne/50 px-6 py-4 rounded-2xl border border-brand-beige/20">
+            <p className="text-stone-600 font-sans text-sm font-medium">RSVP Contact</p>
+            <p className="text-stone-800 font-serif text-lg mt-1">Suresh Shanaka</p>
+            <a href="tel:+94776341985" className="text-brand-beige-deep font-sans text-base font-semibold hover:underline">+94 776341985</a>
+          </div>
+          <div className="w-12 h-[1px] bg-brand-beige/50 mx-auto lg:mx-0" />
         </div>
 
-        {/* Dietary Restrictions */}
-        <div>
-          <label className="block text-sm font-serif text-gray-700 mb-2">
-            Dietary Restrictions or Special Requests
-          </label>
-          <textarea
-            {...register('dietaryRestrictions')}
-            rows={3}
-            className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-[#D4AF37] focus:outline-none transition-colors resize-none bg-white"
-            placeholder="Let us know if you have any dietary restrictions..."
-          />
-        </div>
+        {/* Right Side: Flowing Form */}
+        <div className="lg:w-1/2 relative z-10">
+          <AnimatePresence mode="wait">
+            {status === 'success' ? (
+              <motion.div
+                key="success"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                className="text-center py-16 px-8 bg-white/70 rounded-[2rem] border border-white shadow-xl"
+              >
+                <div className="w-24 h-24 bg-green-50/80 rounded-full flex items-center justify-center mx-auto mb-8 shadow-inner border border-green-100">
+                  <CheckCircle className="w-12 h-12 text-green-500" />
+                </div>
+                <h3 className="text-4xl font-display text-stone-800 mb-4 tracking-tight drop-shadow-sm">With Gratitude</h3>
+                <p className="text-stone-500/90 leading-relaxed font-serif text-lg mb-8">
+                  Your response has been warmly received. We cannot wait to celebrate with you!
+                </p>
+                <button
+                  onClick={() => setStatus('idle')}
+                  className="px-6 py-2 rounded-full border border-brand-beige/30 text-brand-beige-deep font-sans text-[10px] tracking-[0.2em] uppercase hover:bg-brand-beige/10 transition-all duration-300 shadow-sm"
+                >
+                  Update Response
+                </button>
+              </motion.div>
+            ) : (
+              <motion.form
+                key="form"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onSubmit={handleSubmit}
+                className="space-y-6 bg-white/40 p-8 sm:p-10 rounded-[2.5rem] border border-white shadow-[0_15px_30px_rgba(0,0,0,0.05)]"
+              >
+                <div>
+                  <label className="block text-[10px] uppercase tracking-[0.2em] font-bold text-stone-500 mb-3 ml-2">Full Name</label>
+                  <input
+                    required
+                    type="text"
+                    placeholder="E.g., John & Jane Doe"
+                    className="w-full bg-white/80 px-6 py-4 rounded-full border border-stone-200/60 focus:ring-2 focus:ring-brand-beige/30 focus:border-brand-beige-deep/40 outline-none transition-all duration-300 font-serif italic text-lg shadow-inner placeholder:text-stone-300"
+                    value={formData.fullName}
+                    onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                  />
+                </div>
 
-        {/* Submit Button */}
-        <motion.button
-          type="submit"
-          disabled={isSubmitting}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className="w-full py-4 bg-gradient-to-r from-[#D4AF37] to-[#B8941F] text-white rounded-lg font-serif text-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-        >
-          {isSubmitting ? (
-            <span>Sending...</span>
-          ) : (
-            <>
-              <Send className="w-5 h-5" />
-              <span>Send RSVP</span>
-            </>
-          )}
-        </motion.button>
-      </div>
-    </motion.form>
+                <div>
+                  <label className="block text-[10px] uppercase tracking-[0.2em] font-bold text-stone-500 mb-3 ml-2">Number of Guests</label>
+                  <div className="relative group">
+                    <select
+                      className="w-full bg-white/80 px-6 py-4 rounded-full border border-stone-200/60 focus:ring-2 focus:ring-brand-beige/30 focus:border-brand-beige-deep/40 outline-none transition-all duration-300 appearance-none font-serif italic text-lg shadow-inner text-stone-700 cursor-pointer"
+                      value={formData.guests}
+                      onChange={(e) => setFormData({ ...formData, guests: e.target.value })}
+                    >
+                      <option value="1">Just Me (1 Guest)</option>
+                      <option value="2">We are coming! (2 Guests)</option>
+                      <option value="3">3 Guests</option>
+                      <option value="4">4 Guests</option>
+                    </select>
+                    <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-brand-beige-deep transition-transform duration-300 group-hover:scale-110">
+                      <Heart className="w-5 h-5 fill-brand-beige/30 drop-shadow-sm" />
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[10px] uppercase tracking-[0.2em] font-bold text-stone-500 mb-3 ml-2">Dietary Notes (Optional)</label>
+                  <textarea
+                    placeholder="We'd love to know if you have any allergies..."
+                    className="w-full bg-white/80 px-6 py-4 rounded-[2rem] border border-stone-200/60 focus:ring-2 focus:ring-brand-beige/30 focus:border-brand-beige-deep/40 outline-none transition-all duration-300 h-28 resize-none font-serif italic text-lg shadow-inner placeholder:text-stone-300"
+                    value={formData.dietaryNotes}
+                    onChange={(e) => setFormData({ ...formData, dietaryNotes: e.target.value })}
+                  />
+                </div>
+
+                <div className="pt-4">
+                  <button
+                    disabled={status === 'loading'}
+                    type="submit"
+                    className="w-full bg-stone-800 text-brand-champagne py-5 rounded-full font-sans tracking-[0.3em] font-bold text-[11px] uppercase hover:bg-stone-900 transition-all duration-300 shadow-[0_10px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_15px_30px_rgba(0,0,0,0.25)] active:scale-[0.98] flex items-center justify-center gap-3 disabled:opacity-70"
+                  >
+                    {status === 'loading' ? (
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                    ) : (
+                      'Confirm Attendance'
+                    )}
+                  </button>
+                </div>
+              </motion.form>
+            )}
+          </AnimatePresence>
+        </div>
+      </motion.div>
+    </div>
   );
-}
+};

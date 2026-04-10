@@ -3,30 +3,30 @@ import { Heart, MapPin, Utensils, Sparkles, Clock } from 'lucide-react';
 
 const events = [
   {
-    time: '9.00 AM',
-    title: 'Arrival & Welcome',
-    description: 'Guests gather at the Seven Say Banquet Hall for a warm welcome and gathering.',
-    icon: MapPin,
-    color: 'from-blue-500 to-blue-600'
-  },
-  {
-    time: '9.20 AM',
-    title: 'Poruwa Ceremony',
-    description: 'The traditional and sacred Poruwa ceremony where we unite our lives in front of our loved ones.',
+    time: '3.30 PM',
+    title: 'Wedding Ceremony',
+    description: 'The sacred sacrament of holy matrimony at St. Antony\'s Church, Kongodamulla, Katana.',
     icon: Heart,
     color: 'from-rose-400 to-rose-500'
   },
   {
-    time: '12.30 PM',
-    title: 'Wedding Lunch & Reception',
-    description: 'A grand banquet lunch to celebrate our union with music, dancing, and heartfelt moments.',
+    time: '6.30 PM',
+    title: 'Arrival & Welcome',
+    description: 'Guests gather at Senuri Grand Castello, Divulapitiya for drinks and a warm welcome.',
+    icon: MapPin,
+    color: 'from-blue-500 to-blue-600'
+  },
+  {
+    time: '7.00 PM',
+    title: 'Wedding Reception',
+    description: 'A grand celebration to honor our love, complete with dinner, music, and joyful dancing.',
     icon: Utensils,
     color: 'from-amber-400 to-amber-500'
   },
   {
-    time: '4.30 PM',
+    time: '11.30 PM',
     title: 'Farewell',
-    description: 'Thank you for joining us as we begin our beautiful journey together. Safe travels home.',
+    description: 'Thank you for joining us as we begin our beautiful journey together.',
     icon: Sparkles,
     color: 'from-purple-400 to-purple-500'
   },
