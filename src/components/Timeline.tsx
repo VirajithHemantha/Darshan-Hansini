@@ -3,11 +3,11 @@ import { motion } from 'motion/react';
 import { Heart, Music, Camera, Utensils, PartyPopper } from 'lucide-react';
 
 const events = [
-  { time: '03:00 PM', title: 'Guest Arrival at Church', icon: Heart, desc: 'Welcoming our loved ones to St. Antony\'s Church, Kongodamulla' },
-  { time: '03:30 PM', title: 'Wedding Ceremony', icon: Music, desc: 'The sacred exchange of vows at the church' },
-  { time: '07:00 PM', title: 'Reception Begins', icon: PartyPopper, desc: 'Welcome to Senuri Grand Castello, Divulapitiya' },
-  { time: '08:00 PM', title: 'Wedding Feast', icon: Utensils, desc: 'A grand celebratory dinner' },
-  { time: '09:30 PM', title: 'Cake Cutting', icon: Camera, desc: 'Sweet moments and photographs' },
+  { time: '08:55 AM', title: 'Registration', icon: Heart, desc: 'The official signing of the marriage registry at Sawingir Hills.' },
+  { time: '09:57 AM', title: 'Poruwa Ceremony', icon: Music, desc: 'Traditional Sri Lankan marriage rituals and blessings.' },
+  { time: '11:30 AM', title: 'Celebratory Feast', icon: Utensils, desc: 'A grand celebratory lunch at Camelia Hall.' },
+  { time: '01:30 PM', title: 'Photos & Greetings', icon: Camera, desc: 'Capturing beautiful memories and sharing wishes.' },
+  { time: '03:32 PM', title: 'Leaving Hotel', icon: PartyPopper, desc: 'The couple departs to begin their new journey together.' },
 ];
 
 export const Timeline: React.FC = () => {
