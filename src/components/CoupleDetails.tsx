@@ -5,6 +5,10 @@ import { Sparkles, Heart } from 'lucide-react';
 export const CoupleDetails: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
+      {/* Sage Green Watercolor Flower Corners */}
+      <img src="/sage_green_flowers.png" className="absolute top-0 left-0 w-36 sm:w-52 opacity-25 pointer-events-none mix-blend-multiply select-none -z-10" alt="" />
+      <img src="/sage_green_flowers.png" className="absolute bottom-0 right-0 w-36 sm:w-52 opacity-25 pointer-events-none mix-blend-multiply select-none rotate-180 -z-10" alt="" />
+
       {/* Decorative ambient background */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-radial from-brand-beige/15 to-transparent rounded-full blur-[100px] pointer-events-none" />
 

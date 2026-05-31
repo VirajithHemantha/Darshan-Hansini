@@ -12,6 +12,9 @@ export const Hero: React.FC = () => {
 
   return (
     <div ref={containerRef} className="relative h-screen flex items-center justify-center overflow-hidden bg-brand-ivory/50">
+      {/* Sage Green Watercolor Flower Corners */}
+      <img src="/sage_green_flowers.png" className="absolute top-0 left-0 w-32 sm:w-48 opacity-30 pointer-events-none mix-blend-multiply select-none z-10" alt="" />
+      <img src="/sage_green_flowers.png" className="absolute top-0 right-0 w-32 sm:w-48 opacity-30 pointer-events-none mix-blend-multiply select-none rotate-90 z-10" alt="" />
 
       {/* Background Image with Parallax & Elegant Overlay */}
       <motion.div

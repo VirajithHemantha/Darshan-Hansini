@@ -376,6 +376,12 @@ export function EnvelopeOpening({ onComplete, onMusicStart }: { onComplete: () =
 
           {/* Inner Card */}
           <div className="card-container">
+            {/* Sage Green Watercolor Flower Corners */}
+            <img src="/sage_green_flowers.png" className="absolute top-1 left-1 w-12 h-12 sm:w-16 sm:h-16 pointer-events-none mix-blend-multiply opacity-90 select-none z-10" alt="" />
+            <img src="/sage_green_flowers.png" className="absolute top-1 right-1 w-12 h-12 sm:w-16 sm:h-16 pointer-events-none mix-blend-multiply opacity-90 select-none rotate-90 z-10" alt="" />
+            <img src="/sage_green_flowers.png" className="absolute bottom-1 left-1 w-12 h-12 sm:w-16 sm:h-16 pointer-events-none mix-blend-multiply opacity-90 select-none -rotate-90 z-10" alt="" />
+            <img src="/sage_green_flowers.png" className="absolute bottom-1 right-1 w-12 h-12 sm:w-16 sm:h-16 pointer-events-none mix-blend-multiply opacity-90 select-none rotate-180 z-10" alt="" />
+
             <div className="card-border">
               {/* 4 Corner Gold Ornaments */}
               <svg className="corner-ornament corner-tl" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">

@@ -5,6 +5,10 @@ import { Clock, Calendar, MapPin, Heart, Sparkles } from 'lucide-react';
 export const CeremonyDetails: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
+      {/* Sage Green Watercolor Flower Corners */}
+      <img src="/sage_green_flowers.png" className="absolute top-0 right-0 w-36 sm:w-52 opacity-25 pointer-events-none mix-blend-multiply select-none z-10 rotate-90" alt="" />
+      <img src="/sage_green_flowers.png" className="absolute bottom-0 left-0 w-36 sm:w-52 opacity-25 pointer-events-none mix-blend-multiply select-none z-10 -rotate-90" alt="" />
+
       {/* Premium ambient backdrop */}
       <div className="absolute top-0 right-0 w-[80%] h-[80%] bg-gradient-radial from-brand-beige/10 to-transparent rounded-full blur-[120px] pointer-events-none" />
       
