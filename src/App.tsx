@@ -12,11 +12,19 @@ import { Timeline } from './components/Timeline';
 import { Countdown } from './components/Countdown';
 import { RSVPForm } from './components/RSVPForm';
 import { WishesSection } from './components/WishesSection';
+import { AdminPage } from './components/AdminPage';
 
 export default function App() {
   const [showInvitation, setShowInvitation] = useState(false);
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    if (window.location.pathname === '/admin' || window.location.pathname === '/admin/') {
+      setIsAdmin(true);
+    }
+  }, []);
 
   useEffect(() => {
     audioRef.current = new Audio('/Datha_Dara_Dhanith_Sri_Sarigama_lk.mp3');
@@ -50,11 +58,27 @@ export default function App() {
     }
   };
 
+  // Parse custom parameters
+  const params = new URLSearchParams(window.location.search);
+  const guestName = params.get('to') || '';
+  const inviteMessage = params.get('msg') || '';
+
+  if (isAdmin) {
+    return (
+      <div className="font-sans text-stone-800 bg-brand-ivory min-h-screen">
+        <Toaster position="top-center" />
+        <AdminPage />
+      </div>
+    );
+  }
+
   if (!showInvitation) {
     return (
       <EnvelopeOpening
         onComplete={() => setShowInvitation(true)}
         onMusicStart={handleMusicStart}
+        guestName={guestName}
+        inviteMessage={inviteMessage}
       />
     );
   }
@@ -77,7 +101,7 @@ export default function App() {
         {isMusicPlaying ? <Music className="w-5 h-5 sm:w-6 sm:h-6" /> : <VolumeX className="w-5 h-5 sm:w-6 sm:h-6" />}
       </motion.button>
 
-      <Hero />
+      <Hero guestName={guestName} inviteMessage={inviteMessage} />
       
       <div className="py-24 sm:py-32 bg-gradient-to-b from-brand-ivory via-white to-brand-ivory relative">
         <CoupleDetails />

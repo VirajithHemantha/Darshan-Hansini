@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from "react";
 
-export function EnvelopeOpening({ onComplete, onMusicStart }: { onComplete: () => void, onMusicStart?: () => void }) {
+export function EnvelopeOpening({ 
+  onComplete, 
+  onMusicStart, 
+  guestName = '', 
+  inviteMessage = '' 
+}: { 
+  onComplete: () => void; 
+  onMusicStart?: () => void; 
+  guestName?: string; 
+  inviteMessage?: string; 
+}) {
   const [opened, setOpened] = useState(false);
 
   useEffect(() => {
@@ -434,6 +444,36 @@ export function EnvelopeOpening({ onComplete, onMusicStart }: { onComplete: () =
               </div>
 
               <div className="text-details">
+                {guestName && (
+                  <div style={{ marginBottom: '24px' }}>
+                    <span style={{ 
+                      fontFamily: "'Cormorant Garamond', serif", 
+                      fontStyle: 'italic', 
+                      fontSize: '14px', 
+                      letterSpacing: '0.15em', 
+                      color: '#c5b49c', 
+                      display: 'block',
+                      marginBottom: '4px',
+                      textTransform: 'none'
+                    }}>
+                      Specially Invited
+                    </span>
+                    <span style={{ 
+                      fontSize: '22px', 
+                      fontFamily: "'Cormorant Garamond', serif",
+                      fontWeight: 605,
+                      color: '#2f362e',
+                      display: 'block',
+                      borderBottom: '1px solid rgba(197,180,156,0.3)',
+                      paddingBottom: '8px',
+                      marginBottom: '16px',
+                      textTransform: 'none',
+                      lineHeight: '1.2'
+                    }}>
+                      {guestName}
+                    </span>
+                  </div>
+                )}
                 Request the honour of your presence<br />
                 <span className="text-date">Wednesday, 17th of June 2026</span>
                 <span className="text-church">Highlanders Eco & Adventure Resort</span><br />

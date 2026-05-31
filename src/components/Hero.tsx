@@ -3,7 +3,7 @@ import { motion, useScroll, useTransform } from 'motion/react';
 import { Sparkles, Heart } from 'lucide-react';
 import { FloatingPetals } from './FloatingPetals';
 
-export const Hero: React.FC = () => {
+export const Hero: React.FC<{ guestName?: string; inviteMessage?: string }> = ({ guestName = '', inviteMessage = '' }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollY } = useScroll();
   const y1 = useTransform(scrollY, [0, 1000], [0, 400]);
@@ -59,6 +59,22 @@ export const Hero: React.FC = () => {
             The Celebration of Love
           </span>
 
+          {guestName && (
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1.2, ease: "easeOut", delay: 1 }}
+              className="mb-8 text-center"
+            >
+              <span className="text-brand-beige-deep uppercase tracking-[0.2em] text-[10px] font-bold block mb-1">
+                Specially Invited
+              </span>
+              <span className="text-2xl sm:text-3.5xl font-serif italic text-stone-850 border-b border-brand-beige/30 pb-2 px-6 inline-block">
+                {guestName}
+              </span>
+            </motion.div>
+          )}
+
           <div className="relative mb-8 sm:mb-12 w-full flex justify-center">
             {/* Soft glow behind text for contrast and magical feel */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[140%] bg-white/40 blur-[50px] sm:blur-[80px] rounded-full pointer-events-none" />
@@ -74,7 +90,7 @@ export const Hero: React.FC = () => {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mb-12 sm:mb-16">
             <div className="hidden sm:block h-[1px] w-20 bg-gradient-to-r from-transparent to-brand-beige-deep/40" />
             <p className="text-[1.1rem] sm:text-2xl font-serif italic text-stone-900 font-medium tracking-wide px-4 text-center max-w-xl leading-relaxed drop-shadow-[0_2px_8px_rgba(255,255,255,0.95)]">
-              Together with our families, we joyfully invite you to join us
+              {inviteMessage || "Together with our families, we joyfully invite you to join us"}
             </p>
             <div className="hidden sm:block h-[1px] w-20 bg-gradient-to-l from-transparent to-brand-beige-deep/40" />
           </div>
