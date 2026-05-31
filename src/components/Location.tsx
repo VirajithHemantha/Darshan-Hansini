@@ -5,7 +5,7 @@ import { MapPin, Navigation, Compass, Map } from 'lucide-react';
 export const Location: React.FC = () => {
   const venueAddress = "Highlanders Eco & Adventure Resort, Pambahinna, Belihuloya";
   const mapUrl = "https://maps.google.com/maps?q=Highlanders%20Eco%20%26%20Adventure%20Resort,%20Belihuloya&t=&z=15&ie=UTF8&iwloc=&output=embed";
-  const liveLocationUrl = "https://maps.app.goo.gl/V8uUSiWBe8Egd8Zf6?g_st=ic";
+  const liveLocationUrl = "https://maps.app.goo.gl/fBvkJx9cpv8G8mim8";
 
   return (
     <div className="max-w-[85rem] mx-auto px-6 relative py-12">
