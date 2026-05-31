@@ -1,4 +1,4 @@
-const SPREADSHEET_ID = '1jMa12xeTFbfdR5s3NAnYyQT8izPZ-8GAx82X_5i04EE';
+const SPREADSHEET_ID = '12TXhiY47REwJ1fXO2sPrH5fZ2jSRjnrEvBWRrHko64s';
 
 function doPost(e) {
   try {
@@ -13,14 +13,12 @@ function doPost(e) {
     const sheet = getOrCreateSheet_(ss, sheetKey);
 
     if (sheetKey === 'RSVP') {
-      ensureHeaders_(sheet, ['Timestamp', 'Name', 'Phone', 'Guests', 'Attendance', 'DietaryRestrictions']);
+      ensureHeaders_(sheet, ['Timestamp', 'Name', 'Guests', 'Dietary Notes']);
       sheet.appendRow([
         new Date(),
         payload.name || '',
-        payload.phone || payload.email || '',
         payload.guests || '',
-        payload.attendance || '',
-        payload.dietaryRestrictions || '',
+        payload.dietaryNotes || '',
       ]);
     } else {
       ensureHeaders_(sheet, ['Timestamp', 'Name', 'Message']);
@@ -40,11 +38,45 @@ function doPost(e) {
   }
 }
 
-function doGet() {
-  return jsonResponse_({
-    ok: true,
-    message: 'Wedding form endpoint is running.',
-  });
+function doGet(e) {
+  try {
+    const action = e && e.parameter ? e.parameter.action : null;
+    if (action === 'getWishes') {
+      const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+      const sheet = ss.getSheetByName('WISH');
+      if (!sheet) {
+        return jsonResponse_({ ok: true, wishes: [] });
+      }
+      
+      const values = sheet.getDataRange().getValues();
+      if (values.length <= 1) {
+        return jsonResponse_({ ok: true, wishes: [] });
+      }
+      
+      const headers = values[0];
+      const wishes = [];
+      for (let i = 1; i < values.length; i++) {
+        const row = values[i];
+        const wish = {};
+        for (let j = 0; j < headers.length; j++) {
+          const header = String(headers[j]).trim().toLowerCase();
+          wish[header] = row[j];
+        }
+        wishes.push(wish);
+      }
+      return jsonResponse_({ ok: true, wishes: wishes });
+    }
+    
+    return jsonResponse_({
+      ok: true,
+      message: 'Wedding form endpoint is running.',
+    });
+  } catch (error) {
+    return jsonResponse_({
+      ok: false,
+      error: String(error && error.message ? error.message : error),
+    });
+  }
 }
 
 function parsePayload_(e) {

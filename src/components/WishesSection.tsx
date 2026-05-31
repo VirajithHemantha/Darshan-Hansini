@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Send, Loader2, Sparkles } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface Wish {
   id: string;
@@ -24,14 +25,49 @@ export const WishesSection: React.FC = () => {
   const [formData, setFormData] = useState({ name: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  useEffect(() => {
+    const fetchWishes = async () => {
+      const scriptUrl = import.meta.env.VITE_GOOGLE_APPS_SCRIPT_URL || 'https://script.google.com/macros/s/AKfycbwzuxNe8-WRYmXs4x6D99yyMlyVl4mJZGW_PAy-arlS59Zl6IgIm3oWgcL3oZUMLbs/exec';
+      try {
+        const response = await fetch(`${scriptUrl}?action=getWishes`);
+        const data = await response.json();
+        if (data.ok && Array.isArray(data.wishes)) {
+          const mappedWishes = data.wishes.map((w: any, index: number) => ({
+            id: w.timestamp || index.toString(),
+            name: w.name || 'Anonymous',
+            message: w.message || '',
+            createdAt: w.timestamp ? new Date(w.timestamp) : new Date(),
+          }));
+          setWishes(mappedWishes.reverse());
+        }
+      } catch (error) {
+        console.error('Failed to fetch wishes:', error);
+      }
+    };
+    fetchWishes();
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.message) return;
     setIsSubmitting(true);
 
     try {
-      // Simulate network request latency
-      await new Promise(resolve => setTimeout(resolve, 800));
+      const scriptUrl = import.meta.env.VITE_GOOGLE_APPS_SCRIPT_URL || 'https://script.google.com/macros/s/AKfycbwzuxNe8-WRYmXs4x6D99yyMlyVl4mJZGW_PAy-arlS59Zl6IgIm3oWgcL3oZUMLbs/exec';
+
+      const payload = new URLSearchParams();
+      payload.append('sheet', 'WISH');
+      payload.append('name', formData.name);
+      payload.append('message', formData.message);
+
+      await fetch(scriptUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: payload.toString(),
+      });
 
       const newWish: Wish = {
         id: Date.now().toString(),
@@ -40,11 +76,12 @@ export const WishesSection: React.FC = () => {
         createdAt: new Date(),
       };
       
-      // Prepend the new wish to the list
       setWishes(prev => [newWish, ...prev]);
       setFormData({ name: '', message: '' });
+      toast.success('Your blessing has been shared successfully!');
     } catch (error) {
       console.error('Error submitting wish: ', error);
+      toast.error('Could not share your blessing. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
