@@ -2,7 +2,15 @@
   "cleanUrls": true,
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/admin",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/admin/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/((?!assets/|1/|favicon.ico|.*\\.js|.*\\.css|.*\\.png|.*\\.jpeg|.*\\.mp3).*)",
       "destination": "/index.html"
     }
   ]
