@@ -3,13 +3,12 @@ import { motion, AnimatePresence } from 'motion/react';
 import { X, ZoomIn } from 'lucide-react';
 
 const images = [
-  { id: 1, url: '/IMG_6940.JPG.jpeg', fallback: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=800&auto=format&fit=crop', title: 'The Beginning' },
-  { id: 2, url: '/IMG_6941.JPG.jpeg', fallback: 'https://images.unsplash.com/photo-1522673607200-164d1f624698?q=80&w=800&auto=format&fit=crop', title: 'Our Journey' },
-  { id: 3, url: '/IMG_6942.JPG.jpeg', fallback: 'https://images.unsplash.com/photo-1606800052052-a08af7148866?q=80&w=800&auto=format&fit=crop', title: 'A Thousand Words' },
-  { id: 4, url: '/IMG_6943.JPG.jpeg', fallback: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=800&auto=format&fit=crop', title: 'Endless Love' },
-  { id: 5, url: '/IMG_6944.JPG.jpeg', fallback: 'https://images.unsplash.com/photo-1532712938310-34cb3982ef74?q=80&w=800&auto=format&fit=crop', title: 'Cherished Moments' },
-  { id: 6, url: '/IMG_6945.JPG.jpeg', fallback: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800&auto=format&fit=crop', title: 'Together Forever' },
-  { id: 7, url: '/IMG_6946.JPG.jpeg', fallback: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800&auto=format&fit=crop', title: 'Forever & Always' },
+  { id: 1, url: '/1/couple1.jpeg', fallback: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?q=80&w=800&auto=format&fit=crop', title: 'Our Joyful Moments' },
+  { id: 2, url: '/1/couple2.jpeg', fallback: 'https://images.unsplash.com/photo-1522673607200-164d1f624698?q=80&w=800&auto=format&fit=crop', title: 'The Promise of Love' },
+  { id: 3, url: '/1/bride.jpeg', fallback: 'https://images.unsplash.com/photo-1606800052052-a08af7148866?q=80&w=800&auto=format&fit=crop', title: 'The Beautiful Bride' },
+  { id: 4, url: '/1/hero_bg.jpeg', fallback: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=800&auto=format&fit=crop', title: 'Cherished Days' },
+  { id: 5, url: '/1/groom.jpeg', fallback: 'https://images.unsplash.com/photo-1532712938310-34cb3982ef74?q=80&w=800&auto=format&fit=crop', title: 'The Handsome Groom' },
+  { id: 6, url: '/1/couple3.jpeg', fallback: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=800&auto=format&fit=crop', title: 'Together Forever' },
 ];
 
 export const Gallery: React.FC = () => {

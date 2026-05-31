@@ -21,7 +21,7 @@ export const CoupleDetails: React.FC = () => {
             <div className="w-12 sm:w-20 h-[1px] bg-gradient-to-l from-transparent to-brand-beige-deep/60" />
           </div>
           <h2 className="text-5xl sm:text-7xl font-display text-stone-800 tracking-tight drop-shadow-sm">
-            Virasha <span className="italic text-brand-beige-deep font-light mx-2">&</span> Nadeesh
+            Darshan <span className="italic text-brand-beige-deep font-light mx-2">&</span> Hansini
           </h2>
         </motion.div>
       </div>
@@ -37,8 +37,19 @@ export const CoupleDetails: React.FC = () => {
         >
           <div className="mb-4 flex flex-col items-center lg:items-end">
             <span className="text-brand-beige-deep uppercase tracking-[0.4em] text-[10px] font-bold mb-3 block">The Groom</span>
-            <h3 className="text-4xl sm:text-5xl font-display text-stone-800 mb-2 drop-shadow-sm">Nadeesh</h3>
-            <p className="text-stone-500/90 font-serif italic text-base sm:text-lg">Son of Rasika Welihinda<br />& Ishani Fernando</p>
+            
+            {/* Groom Portrait Frame */}
+            <div className="relative w-[180px] h-[240px] rounded-[5rem_5rem_1rem_1rem] overflow-hidden border-[4px] border-white shadow-md bg-brand-champagne mb-6 group transition-transform duration-500 hover:scale-105">
+              <img
+                src="/1/groom.jpeg"
+                alt="Darshan"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 shadow-[inset_0_0_20px_rgba(0,0,0,0.1)] pointer-events-none" />
+            </div>
+
+            <h3 className="text-4xl sm:text-5xl font-display text-stone-800 mb-2 drop-shadow-sm">Darshan</h3>
+            <p className="text-stone-500/90 font-serif italic text-base sm:text-lg">Son of Mr. Kadiwanan<br />& Mrs. Kumari</p>
           </div>
           <div className="hidden lg:flex justify-end mt-8">
             <Heart className="w-6 h-6 text-brand-beige/60 fill-brand-beige/20 transform hover:scale-110 transition-transform cursor-pointer" />
@@ -58,12 +69,12 @@ export const CoupleDetails: React.FC = () => {
 
           <div className="relative w-[300px] h-[400px] sm:w-[360px] sm:h-[500px] lg:w-[420px] lg:h-[580px] rounded-[12rem_12rem_16px_16px] overflow-hidden border-[6px] border-white/90 shadow-[0_20px_50px_rgba(176,137,104,0.2)] bg-brand-champagne mx-auto z-10 transition-transform duration-700 group-hover:-translate-y-2">
             <img
-              src="/2.jpeg"
+              src="/1/couple1.jpeg"
               onError={(e) => {
                 e.currentTarget.src = "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=800&h=1000";
                 e.currentTarget.onerror = null;
               }}
-              alt="Virasha and Nadeesh"
+              alt="Darshan and Hansini"
               className="w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-105"
             />
             {/* Elegant inner shadow & overlay */}
@@ -91,8 +102,19 @@ export const CoupleDetails: React.FC = () => {
         >
           <div className="mb-4 flex flex-col items-center lg:items-start">
             <span className="text-brand-beige-deep uppercase tracking-[0.4em] text-[10px] font-bold mb-3 block">The Bride</span>
-            <h3 className="text-4xl sm:text-5xl font-display text-stone-800 mb-2 drop-shadow-sm">Virasha</h3>
-            <p className="text-stone-500/90 font-serif italic text-base sm:text-lg">Daughter of Chaminda Pushpakumara<br />& Nayomi Dayangika</p>
+
+            {/* Bride Portrait Frame */}
+            <div className="relative w-[180px] h-[240px] rounded-[5rem_5rem_1rem_1rem] overflow-hidden border-[4px] border-white shadow-md bg-brand-champagne mb-6 group transition-transform duration-500 hover:scale-105">
+              <img
+                src="/1/bride.jpeg"
+                alt="Hansini"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 shadow-[inset_0_0_20px_rgba(0,0,0,0.1)] pointer-events-none" />
+            </div>
+
+            <h3 className="text-4xl sm:text-5xl font-display text-stone-800 mb-2 drop-shadow-sm">Hansini</h3>
+            <p className="text-stone-500/90 font-serif italic text-base sm:text-lg">Daughter of Mr. Ranaweera<br />& Mrs. Amarakoon</p>
           </div>
           <div className="hidden lg:flex justify-start mt-8">
             <Heart className="w-6 h-6 text-brand-beige/60 fill-brand-beige/20 transform hover:scale-110 transition-transform cursor-pointer" />

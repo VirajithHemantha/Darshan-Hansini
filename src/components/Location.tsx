@@ -3,9 +3,9 @@ import { motion } from 'motion/react';
 import { MapPin, Navigation, Compass, Map } from 'lucide-react';
 
 export const Location: React.FC = () => {
-  const venueAddress = "Sawingir Hills, No. 215, Cooray Waththa Thalagala, Gonapola";
-  const mapUrl = "https://maps.google.com/maps?q=Sawingir%20Hills,%20No.%20215,%20Cooray%20Waththa%20Thalagala,%20Gonapola&t=&z=15&ie=UTF8&iwloc=&output=embed";
-  const liveLocationUrl = "https://www.google.com/maps/search/Sawingir+Hills+Gonapola";
+  const venueAddress = "Highlanders Eco & Adventure Resort, Pambahinna, Belihuloya";
+  const mapUrl = "https://maps.google.com/maps?q=Highlanders%20Eco%20%26%20Adventure%20Resort,%20Belihuloya&t=&z=15&ie=UTF8&iwloc=&output=embed";
+  const liveLocationUrl = "https://maps.app.goo.gl/V8uUSiWBe8Egd8Zf6?g_st=ic";
 
   return (
     <div className="max-w-[85rem] mx-auto px-6 relative py-12">
@@ -45,8 +45,8 @@ export const Location: React.FC = () => {
                   <MapPin className="text-brand-beige-deep w-5 h-5" />
                 </div>
                 <div>
-                  <p className="text-2xl font-serif text-stone-800 mb-1">Sawingir Hills</p>
-                  <p className="text-[11px] uppercase tracking-[0.2em] font-medium text-stone-400 leading-relaxed mb-6">Gonapola</p>
+                  <p className="text-2xl font-serif text-stone-800 mb-1">Highlanders Eco & Adventure Resort</p>
+                  <p className="text-[11px] uppercase tracking-[0.2em] font-medium text-stone-400 leading-relaxed mb-6">Belihuloya</p>
                   
                   <p className="text-stone-500/90 italic font-serif text-lg leading-relaxed max-w-sm mb-10 pl-4 border-l-[1.5px] border-brand-beige/40">
                     "A serene and elegant setting where we will begin our new chapter together."
@@ -85,7 +85,7 @@ export const Location: React.FC = () => {
             <div className="absolute inset-0 bg-brand-beige/10 mix-blend-multiply pointer-events-none z-20 group-hover/map:opacity-0 transition-opacity duration-1000" />
             
             <iframe
-              title="Sawingir Hills Location"
+              title="Highlanders Eco & Adventure Resort Location"
               src={mapUrl}
               width="100%"
               height="100%"

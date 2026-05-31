@@ -2,15 +2,15 @@
 @import "tailwindcss";
 
 @theme {
-  /* Off-white & Brown Color Palette */
-  --color-brand-beige: #cbb194;
-  --color-brand-beige-deep: #705335;
-  --color-brand-champagne: #f4ede4;
-  --color-brand-ivory: #faf8f5;
-  --color-brand-gold: #a37f55;
-  --color-brand-gold-light: #dfd2c0;
-  --color-brand-mocha: #58402c;
-  --color-brand-sand: #e3d7cb;
+  /* Sage Green Color Palette */
+  --color-brand-beige: #8ca88d;
+  --color-brand-beige-deep: #4a5d4b;
+  --color-brand-champagne: #e8efe9;
+  --color-brand-ivory: #f4f7f4;
+  --color-brand-gold: #c5b49c;
+  --color-brand-gold-light: #dce1dc;
+  --color-brand-mocha: #2f362e;
+  --color-brand-sand: #bdc7bd;
 
   --font-serif: "Cormorant Garamond", serif;
   --font-display: "Great Vibes", cursive;
@@ -23,7 +23,8 @@
   color: #292524;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;

@@ -3,11 +3,11 @@ import { motion } from 'motion/react';
 import { Heart, Music, Camera, Utensils, PartyPopper } from 'lucide-react';
 
 const events = [
-  { time: '08:55 AM', title: 'Registration', icon: Heart, desc: 'The official signing of the marriage registry at Sawingir Hills.' },
-  { time: '09:57 AM', title: 'Poruwa Ceremony', icon: Music, desc: 'Traditional Sri Lankan marriage rituals and blessings.' },
-  { time: '11:30 AM', title: 'Celebratory Feast', icon: Utensils, desc: 'A grand celebratory lunch at Camelia Hall.' },
-  { time: '01:30 PM', title: 'Photos & Greetings', icon: Camera, desc: 'Capturing beautiful memories and sharing wishes.' },
-  { time: '03:32 PM', title: 'Leaving Hotel', icon: PartyPopper, desc: 'The couple departs to begin their new journey together.' },
+  { time: '09:00 AM', title: 'Arrival & Welcome', icon: Heart, desc: 'Guests gather at the scenic Highlanders Eco & Adventure Resort.' },
+  { time: '10:00 AM', title: 'Wedding Ceremony', icon: Music, desc: 'Exchange of vows and traditional marriage blessings.' },
+  { time: '11:30 AM', title: 'Photos & Greetings', icon: Camera, desc: 'Capturing beautiful memories and sharing wishes.' },
+  { time: '12:30 PM', title: 'Celebratory Feast', icon: Utensils, desc: 'A grand celebratory lunch and reception to toast the newlyweds.' },
+  { time: '04:00 PM', title: 'Farewell & Departure', icon: PartyPopper, desc: 'The couple departs to begin their new journey together.' },
 ];
 
 export const Timeline: React.FC = () => {
