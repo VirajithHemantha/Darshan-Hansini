@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { isMobileDevice } from "../utils/device";
 
 export function EnvelopeOpening({ 
   onComplete, 
@@ -16,9 +17,10 @@ export function EnvelopeOpening({
   useEffect(() => {
     if (opened) {
       if (onMusicStart) onMusicStart();
+      const delay = isMobileDevice() ? 2200 : 4000;
       const timer = setTimeout(() => {
         onComplete();
-      }, 5000);
+      }, delay);
       return () => clearTimeout(timer);
     }
   }, [opened, onComplete, onMusicStart]);
@@ -26,8 +28,6 @@ export function EnvelopeOpening({
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap');
-
         * {
           box-sizing: border-box;
         }
@@ -41,7 +41,7 @@ export function EnvelopeOpening({
 
         .scene {
           position: relative;
-          min-height: 100vh;
+          min-height: 100dvh;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -50,30 +50,20 @@ export function EnvelopeOpening({
           perspective: 1500px;
           overflow: hidden;
           font-family: "Cormorant Garamond", serif;
+          -webkit-overflow-scrolling: touch;
         }
 
-        /* Ambient floating orbs */
-        .scene::before,
-        .scene::after {
-          content: '';
-          position: absolute;
-          border-radius: 50%;
-          pointer-events: none;
-          filter: blur(80px);
-        }
-        .scene::before {
-          width: 400px;
-          height: 400px;
-          top: -100px;
-          right: -100px;
-          background: radial-gradient(circle, rgba(197,180,156,0.15) 0%, transparent 70%);
-        }
-        .scene::after {
-          width: 300px;
-          height: 300px;
-          bottom: -80px;
-          left: -80px;
-          background: radial-gradient(circle, rgba(74,93,75,0.12) 0%, transparent 70%);
+        @media (max-width: 767px), (hover: none) and (pointer: coarse) {
+          .scene {
+            perspective: none;
+          }
+          .scene::before,
+          .scene::after {
+            display: none;
+          }
+          .flap-left {
+            transition: transform 0.9s cubic-bezier(0.25, 1, 0.3, 1) !important;
+          }
         }
 
         .envelope-container {
@@ -173,7 +163,7 @@ export function EnvelopeOpening({
 
         /* Typography */
         .text-eyebrow {
-          font-family: 'Montserrat', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 10px;
           letter-spacing: 0.45em;
           text-transform: uppercase;
@@ -207,7 +197,7 @@ export function EnvelopeOpening({
         }
 
         .text-details {
-          font-family: 'Montserrat', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 9.5px;
           letter-spacing: 0.22em;
           text-transform: uppercase;
@@ -246,7 +236,6 @@ export function EnvelopeOpening({
           width: 66%;
           height: 100%;
           background: linear-gradient(135deg, #fafcfb 0%, #dae3db 50%, #fafcfb 100%);
-          background-image: url("https://www.transparenttextures.com/patterns/cream-paper.png");
           border-right: 1.5px solid rgba(197,180,156,0.3);
           box-shadow: 10px 0 30px -10px rgba(74,93,75,0.2);
           transform-origin: left center;
@@ -326,7 +315,7 @@ export function EnvelopeOpening({
           left: 50%;
           transform: translateX(-50%);
           color: #4a5d4b;
-          font-family: "Montserrat", sans-serif;
+          font-family: "Inter", sans-serif;
           font-size: 10px;
           letter-spacing: 0.35em;
           text-transform: uppercase;
@@ -387,10 +376,10 @@ export function EnvelopeOpening({
           {/* Inner Card */}
           <div className="card-container">
             {/* Sage Green Watercolor Flower Corners */}
-            <img src="/sage_green_flowers.png" className="absolute top-1 left-1 w-12 h-12 sm:w-16 sm:h-16 pointer-events-none mix-blend-multiply opacity-90 select-none z-10" alt="" />
-            <img src="/sage_green_flowers.png" className="absolute top-1 right-1 w-12 h-12 sm:w-16 sm:h-16 pointer-events-none mix-blend-multiply opacity-90 select-none rotate-90 z-10" alt="" />
-            <img src="/sage_green_flowers.png" className="absolute bottom-1 left-1 w-12 h-12 sm:w-16 sm:h-16 pointer-events-none mix-blend-multiply opacity-90 select-none -rotate-90 z-10" alt="" />
-            <img src="/sage_green_flowers.png" className="absolute bottom-1 right-1 w-12 h-12 sm:w-16 sm:h-16 pointer-events-none mix-blend-multiply opacity-90 select-none rotate-180 z-10" alt="" />
+            <img src="/sage_green_flowers.png" className="absolute top-1 left-1 w-12 h-12 sm:w-16 sm:h-16 pointer-events-none opacity-90 select-none z-10" alt="" loading="eager" decoding="async" />
+            <img src="/sage_green_flowers.png" className="absolute top-1 right-1 w-12 h-12 sm:w-16 sm:h-16 pointer-events-none opacity-90 select-none rotate-90 z-10" alt="" loading="eager" decoding="async" />
+            <img src="/sage_green_flowers.png" className="absolute bottom-1 left-1 w-12 h-12 sm:w-16 sm:h-16 pointer-events-none opacity-90 select-none -rotate-90 z-10" alt="" loading="lazy" decoding="async" />
+            <img src="/sage_green_flowers.png" className="absolute bottom-1 right-1 w-12 h-12 sm:w-16 sm:h-16 pointer-events-none opacity-90 select-none rotate-180 z-10" alt="" loading="lazy" decoding="async" />
 
             <div className="card-border">
               {/* 4 Corner Gold Ornaments */}
@@ -490,7 +479,7 @@ export function EnvelopeOpening({
             <div className="ribbon-band"></div>
             <div className="bow-center">
               {/* Photorealistic Satin Bow Image */}
-              <img src="/sage_green_satin_bow.png" alt="Satin Bow" className="bow-image" />
+              <img src="/sage_green_satin_bow.png" alt="Satin Bow" className="bow-image" loading="eager" decoding="async" fetchPriority="high" />
             </div>
           </div>
 

@@ -2,53 +2,75 @@ import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { Sparkles, Heart } from 'lucide-react';
 import { FloatingPetals } from './FloatingPetals';
+import { OptimizedImage } from './OptimizedImage';
+import { useMobilePerformance } from '../hooks/useMobilePerformance';
 
-export const Hero: React.FC<{ guestName?: string; inviteMessage?: string }> = ({ guestName = '', inviteMessage = '' }) => {
+export const Hero: React.FC<{ guestName?: string; inviteMessage?: string }> = ({
+  guestName = '',
+  inviteMessage = '',
+}) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const { reduceEffects } = useMobilePerformance();
   const { scrollY } = useScroll();
-  const y1 = useTransform(scrollY, [0, 1000], [0, 400]);
-  const scale = useTransform(scrollY, [0, 800], [1, 1.1]);
-  const opacity = useTransform(scrollY, [0, 400], [1, 0]);
+  const y1 = useTransform(scrollY, [0, 1000], [0, reduceEffects ? 0 : 400]);
+  const scale = useTransform(scrollY, [0, 800], [1, reduceEffects ? 1 : 1.1]);
+  const opacity = useTransform(scrollY, [0, 400], [1, reduceEffects ? 1 : 0]);
+
+  const BackgroundLayer = reduceEffects ? 'div' : motion.div;
+  const ContentLayer = reduceEffects ? 'div' : motion.div;
+  const AnimatedBlock = reduceEffects ? 'div' : motion.div;
 
   return (
-    <div ref={containerRef} className="relative h-screen flex items-center justify-center overflow-hidden bg-brand-ivory/50">
-      {/* Sage Green Watercolor Flower Corners */}
-      <img src="/sage_green_flowers.png" className="absolute top-0 left-0 w-32 sm:w-48 opacity-30 pointer-events-none mix-blend-multiply select-none z-10" alt="" />
-      <img src="/sage_green_flowers.png" className="absolute top-0 right-0 w-32 sm:w-48 opacity-30 pointer-events-none mix-blend-multiply select-none rotate-90 z-10" alt="" />
+    <div
+      ref={containerRef}
+      className="relative h-[100dvh] min-h-[600px] flex items-center justify-center overflow-hidden bg-brand-ivory/50"
+    >
+      <OptimizedImage
+        src="/sage_green_flowers.png"
+        alt=""
+        className="absolute top-0 left-0 w-32 sm:w-48 opacity-30 pointer-events-none select-none z-10"
+        loading="lazy"
+      />
+      <OptimizedImage
+        src="/sage_green_flowers.png"
+        alt=""
+        className="absolute top-0 right-0 w-32 sm:w-48 opacity-30 pointer-events-none select-none rotate-90 z-10"
+        loading="lazy"
+      />
 
-      {/* Background Image with Parallax & Elegant Overlay */}
-      <motion.div
+      <BackgroundLayer
         className="absolute inset-0 z-0 origin-center"
-        style={{ y: y1, scale }}
+        {...(!reduceEffects && { style: { y: y1, scale } })}
       >
-        <img
+        <OptimizedImage
           src="/1/hero_bg.jpeg"
           alt="Darshan and Hansini"
+          priority
           className="w-full h-full object-cover opacity-80"
           style={{ objectPosition: 'center 20%' }}
         />
-        {/* Soft elegant gradient overlays to ensure text readability & premium feel */}
         <div className="absolute inset-0 bg-gradient-to-t from-brand-ivory via-brand-ivory/30 to-brand-ivory/50" />
-        <div className="absolute inset-0 bg-gradient-to-b from-brand-beige/15 via-transparent to-brand-beige/10 mix-blend-overlay" />
-      </motion.div>
+        <div className="absolute inset-0 bg-gradient-to-b from-brand-beige/15 via-transparent to-brand-beige/10" />
+      </BackgroundLayer>
 
-      {/* Persistent subtle falling petals in background */}
-      <div className="absolute inset-0 z-[5] opacity-60">
-        <FloatingPetals />
-      </div>
+      {!reduceEffects && (
+        <div className="absolute inset-0 z-[5] opacity-60">
+          <FloatingPetals />
+        </div>
+      )}
 
-      {/* Main Content */}
-      <motion.div
+      <ContentLayer
         className="relative z-10 text-center px-4 sm:px-6 w-full max-w-6xl mt-10 sm:mt-20"
-        style={{ opacity }}
+        {...(!reduceEffects && { style: { opacity } })}
       >
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1], delay: 0.8 }}
+        <AnimatedBlock
+          {...(!reduceEffects && {
+            initial: { opacity: 0, y: 30 },
+            animate: { opacity: 1, y: 0 },
+            transition: { duration: 1.5, ease: [0.22, 1, 0.36, 1], delay: 0.8 },
+          })}
           className="flex flex-col items-center"
         >
-          {/* Subtle top decoration */}
           <div className="flex items-center gap-3 mb-6 sm:mb-8">
             <div className="h-[1px] w-12 sm:w-16 bg-gradient-to-l from-brand-beige-deep/60 to-transparent" />
             <Heart className="w-5 h-5 text-brand-beige-deep/70 fill-brand-beige/20" />
@@ -60,10 +82,12 @@ export const Hero: React.FC<{ guestName?: string; inviteMessage?: string }> = ({
           </span>
 
           {guestName && (
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1.2, ease: "easeOut", delay: 1 }}
+            <AnimatedBlock
+              {...(!reduceEffects && {
+                initial: { opacity: 0, scale: 0.95 },
+                animate: { opacity: 1, scale: 1 },
+                transition: { duration: 1.2, ease: 'easeOut', delay: 1 },
+              })}
               className="mb-8 text-center"
             >
               <span className="text-brand-beige-deep uppercase tracking-[0.2em] text-[10px] font-bold block mb-1">
@@ -72,16 +96,19 @@ export const Hero: React.FC<{ guestName?: string; inviteMessage?: string }> = ({
               <span className="text-2xl sm:text-3.5xl font-serif italic text-stone-850 border-b border-brand-beige/30 pb-2 px-6 inline-block">
                 {guestName}
               </span>
-            </motion.div>
+            </AnimatedBlock>
           )}
 
           <div className="relative mb-8 sm:mb-12 w-full flex justify-center">
-            {/* Soft glow behind text for contrast and magical feel */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[140%] bg-white/40 blur-[50px] sm:blur-[80px] rounded-full pointer-events-none" />
+            {!reduceEffects && (
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[140%] bg-white/40 blur-[50px] sm:blur-[80px] rounded-full pointer-events-none" />
+            )}
 
             <h1 className="relative text-6xl sm:text-[7rem] lg:text-[9.5rem] font-display text-stone-900 leading-[1.1] sm:leading-[0.9] drop-shadow-[0_4px_16px_rgba(255,255,255,0.95)]">
               Darshan <br className="sm:hidden" />
-              <span className="text-brand-mocha italic font-normal mx-2 sm:mx-6 text-5xl sm:text-[6rem] lg:text-[8rem] inline-block -translate-y-2 sm:-translate-y-6">&</span>
+              <span className="text-brand-mocha italic font-normal mx-2 sm:mx-6 text-5xl sm:text-[6rem] lg:text-[8rem] inline-block -translate-y-2 sm:-translate-y-6">
+                &
+              </span>
               <br className="sm:hidden" />
               Hansini
             </h1>
@@ -90,15 +117,16 @@ export const Hero: React.FC<{ guestName?: string; inviteMessage?: string }> = ({
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mb-12 sm:mb-16">
             <div className="hidden sm:block h-[1px] w-20 bg-gradient-to-r from-transparent to-brand-beige-deep/40" />
             <p className="text-[1.1rem] sm:text-2xl font-serif italic text-stone-900 font-medium tracking-wide px-4 text-center max-w-xl leading-relaxed drop-shadow-[0_2px_8px_rgba(255,255,255,0.95)]">
-              {inviteMessage || "Together with our families, we joyfully invite you to join us"}
+              {inviteMessage || 'Together with our families, we joyfully invite you to join us'}
             </p>
             <div className="hidden sm:block h-[1px] w-20 bg-gradient-to-l from-transparent to-brand-beige-deep/40" />
           </div>
 
-          {/* Enhanced Date pill with premium glass effect */}
           <div className="inline-block relative group mt-4 sm:mt-8 w-full sm:w-auto px-4 sm:px-0">
-            <div className="absolute -inset-1 bg-gradient-to-r from-brand-beige-deep/40 via-brand-gold/40 to-brand-beige-deep/40 rounded-full blur-[8px] opacity-70 group-hover:opacity-100 transition duration-1000 group-hover:duration-300 transform group-hover:scale-105" />
-            <div className="relative px-4 sm:px-12 py-3 sm:py-5 bg-white/70 backdrop-blur-lg border border-brand-beige/50 rounded-full shadow-[0_8px_30px_rgba(176,137,104,0.15)] overflow-hidden whitespace-nowrap flex items-center justify-center">
+            {!reduceEffects && (
+              <div className="absolute -inset-1 bg-gradient-to-r from-brand-beige-deep/40 via-brand-gold/40 to-brand-beige-deep/40 rounded-full blur-[8px] opacity-70" />
+            )}
+            <div className="relative px-4 sm:px-12 py-3 sm:py-5 bg-white/90 sm:bg-white/70 sm:backdrop-blur-lg border border-brand-beige/50 rounded-full shadow-[0_8px_30px_rgba(176,137,104,0.15)] overflow-hidden whitespace-nowrap flex items-center justify-center">
               <div className="absolute inset-0 bg-gradient-to-b from-white/60 to-transparent pointer-events-none" />
               <span className="relative text-[16px] sm:text-3xl font-serif text-brand-mocha tracking-[0.2em] sm:tracking-[0.4em] font-bold drop-shadow-[0_2px_4px_rgba(255,255,255,0.8)] flex items-center gap-2 sm:gap-3 whitespace-nowrap">
                 <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-brand-gold flex-shrink-0" />
@@ -107,11 +135,10 @@ export const Hero: React.FC<{ guestName?: string; inviteMessage?: string }> = ({
               </span>
             </div>
           </div>
-        </motion.div>
-      </motion.div>
+        </AnimatedBlock>
+      </ContentLayer>
 
-      {/* Premium Side Decorative Text */}
-      <div className="absolute left-6 sm:left-10 top-1/2 -translate-y-1/2 hidden lg:flex flex-col items-center gap-6 mix-blend-multiply opacity-70">
+      <div className="absolute left-6 sm:left-10 top-1/2 -translate-y-1/2 hidden lg:flex flex-col items-center gap-6 opacity-70">
         <div className="w-[1px] h-24 bg-gradient-to-b from-transparent to-brand-beige-deep/50" />
         <p className="writing-mode-vertical text-[11px] uppercase tracking-[0.6em] text-brand-mocha font-bold font-sans">
           Highlanders Resort • Belihuloya
@@ -119,7 +146,7 @@ export const Hero: React.FC<{ guestName?: string; inviteMessage?: string }> = ({
         <div className="w-[1px] h-24 bg-gradient-to-t from-transparent to-brand-beige-deep/50" />
       </div>
 
-      <div className="absolute right-6 sm:right-10 top-1/2 -translate-y-1/2 hidden lg:flex flex-col items-center gap-6 mix-blend-multiply opacity-70">
+      <div className="absolute right-6 sm:right-10 top-1/2 -translate-y-1/2 hidden lg:flex flex-col items-center gap-6 opacity-70">
         <div className="w-[1px] h-24 bg-gradient-to-b from-transparent to-brand-beige-deep/50" />
         <p className="writing-mode-vertical text-[11px] uppercase tracking-[0.6em] text-brand-mocha font-bold font-sans rotate-180">
           Save the Date • June 2026
@@ -127,17 +154,26 @@ export const Hero: React.FC<{ guestName?: string; inviteMessage?: string }> = ({
         <div className="w-[1px] h-24 bg-gradient-to-t from-transparent to-brand-beige-deep/50" />
       </div>
 
-      {/* Refined Scroll Indicator */}
-      <motion.div
-        className="absolute bottom-8 sm:bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 cursor-pointer"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 2.5, duration: 1 }}
-        whileHover={{ scale: 1.1 }}
-      >
-        <span className="text-[9px] sm:text-[10px] font-sans uppercase tracking-[0.4em] text-stone-500 font-semibold drop-shadow-md">Discover</span>
-        <div className="w-[1px] h-12 sm:h-20 bg-gradient-to-b from-brand-beige-deep/60 to-transparent animate-bounce" />
-      </motion.div>
+      {!reduceEffects ? (
+        <motion.div
+          className="absolute bottom-8 sm:bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 cursor-pointer"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 2.5, duration: 1 }}
+        >
+          <span className="text-[9px] sm:text-[10px] font-sans uppercase tracking-[0.4em] text-stone-500 font-semibold drop-shadow-md">
+            Discover
+          </span>
+          <div className="w-[1px] h-12 sm:h-20 bg-gradient-to-b from-brand-beige-deep/60 to-transparent animate-bounce" />
+        </motion.div>
+      ) : (
+        <div className="absolute bottom-8 sm:bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
+          <span className="text-[9px] sm:text-[10px] font-sans uppercase tracking-[0.4em] text-stone-500 font-semibold">
+            Discover
+          </span>
+          <div className="w-[1px] h-12 sm:h-20 bg-gradient-to-b from-brand-beige-deep/60 to-transparent" />
+        </div>
+      )}
     </div>
   );
 };

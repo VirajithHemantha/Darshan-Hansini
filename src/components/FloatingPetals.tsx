@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
+import { shouldReduceEffects } from '../utils/device';
 
 interface Petal {
   id: number;
@@ -12,12 +13,21 @@ interface Petal {
   drift: number;
 }
 
+const PETAL_COUNT_DESKTOP = 18;
+const PETAL_COUNT_MOBILE = 0;
+
 export const FloatingPetals: React.FC = () => {
   const [petals, setPetals] = useState<Petal[]>([]);
 
   useEffect(() => {
+    if (shouldReduceEffects()) {
+      setPetals([]);
+      return;
+    }
+
     const colors = ['#8ca88d', '#a3bfa4', '#c3d8c4', '#d6e4d7', '#bdc7bd'];
-    const newPetals = Array.from({ length: 30 }).map((_, i) => ({
+    const count = shouldReduceEffects() ? PETAL_COUNT_MOBILE : PETAL_COUNT_DESKTOP;
+    const newPetals = Array.from({ length: count }).map((_, i) => ({
       id: i,
       x: Math.random() * 100,
       size: Math.random() * 8 + 8,
@@ -30,8 +40,10 @@ export const FloatingPetals: React.FC = () => {
     setPetals(newPetals);
   }, []);
 
+  if (petals.length === 0) return null;
+
   return (
-    <div className="fixed inset-0 pointer-events-none overflow-hidden z-40">
+    <div className="absolute inset-0 pointer-events-none overflow-hidden">
       {petals.map((petal) => (
         <motion.div
           key={petal.id}
@@ -41,19 +53,19 @@ export const FloatingPetals: React.FC = () => {
             x: `${petal.x}vw`,
             y: '-10vh',
             rotate: petal.rotation,
-            opacity: 0
+            opacity: 0,
           }}
           animate={{
             y: '110vh',
             x: `${petal.x + petal.drift}vw`,
             rotate: petal.rotation + 720,
-            opacity: [0, 0.6, 0.6, 0]
+            opacity: [0, 0.6, 0.6, 0],
           }}
           transition={{
             duration: petal.duration,
             repeat: Infinity,
             delay: petal.delay,
-            ease: "linear"
+            ease: 'linear',
           }}
         >
           <svg

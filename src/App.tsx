@@ -1,18 +1,24 @@
-import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { useState, useRef, useEffect, lazy, Suspense } from 'react';
+import { motion } from 'motion/react';
 import { Music, VolumeX, Heart } from 'lucide-react';
 import { Toaster } from 'sonner';
 
 import { EnvelopeOpening } from './components/EnvelopeOpening';
 import { Hero } from './components/Hero';
-import { CoupleDetails } from './components/CoupleDetails';
-import { CeremonyDetails } from './components/CeremonyDetails';
-import { Location } from './components/Location';
-import { Timeline } from './components/Timeline';
-import { Countdown } from './components/Countdown';
-import { RSVPForm } from './components/RSVPForm';
-import { WishesSection } from './components/WishesSection';
 import { AdminPage } from './components/AdminPage';
+import { isMobileDevice } from './utils/device';
+
+const CoupleDetails = lazy(() => import('./components/CoupleDetails').then((m) => ({ default: m.CoupleDetails })));
+const CeremonyDetails = lazy(() => import('./components/CeremonyDetails').then((m) => ({ default: m.CeremonyDetails })));
+const Location = lazy(() => import('./components/Location').then((m) => ({ default: m.Location })));
+const Timeline = lazy(() => import('./components/Timeline').then((m) => ({ default: m.Timeline })));
+const Countdown = lazy(() => import('./components/Countdown').then((m) => ({ default: m.Countdown })));
+const RSVPForm = lazy(() => import('./components/RSVPForm').then((m) => ({ default: m.RSVPForm })));
+const WishesSection = lazy(() => import('./components/WishesSection').then((m) => ({ default: m.WishesSection })));
+
+function SectionFallback() {
+  return <div className="min-h-[40vh]" aria-hidden="true" />;
+}
 
 export default function App() {
   const [showInvitation, setShowInvitation] = useState(false);
@@ -26,12 +32,18 @@ export default function App() {
     }
   }, []);
 
-  useEffect(() => {
-    audioRef.current = new Audio('/Datha_Dara_Dhanith_Sri_Sarigama_lk.mp3');
-    audioRef.current.loop = true;
-    audioRef.current.volume = 0.3;
-    audioRef.current.preload = 'auto';
+  const ensureAudio = () => {
+    if (!audioRef.current) {
+      const audio = new Audio('/Datha_Dara_Dhanith_Sri_Sarigama_lk.mp3');
+      audio.loop = true;
+      audio.volume = 0.3;
+      audio.preload = 'none';
+      audioRef.current = audio;
+    }
+    return audioRef.current;
+  };
 
+  useEffect(() => {
     return () => {
       if (audioRef.current) {
         audioRef.current.pause();
@@ -42,20 +54,20 @@ export default function App() {
 
   const handleMusicStart = () => {
     setIsMusicPlaying(true);
-    if (audioRef.current) {
-      audioRef.current.play().catch(console.error);
-    }
+    const audio = ensureAudio();
+    audio.preload = 'auto';
+    audio.play().catch(console.error);
   };
 
   const toggleMusic = () => {
-    if (audioRef.current) {
-      if (isMusicPlaying) {
-        audioRef.current.pause();
-      } else {
-        audioRef.current.play().catch(console.error);
-      }
-      setIsMusicPlaying(!isMusicPlaying);
+    const audio = ensureAudio();
+    if (isMusicPlaying) {
+      audio.pause();
+    } else {
+      audio.preload = 'auto';
+      audio.play().catch(console.error);
     }
+    setIsMusicPlaying(!isMusicPlaying);
   };
 
   // Parse custom parameters
@@ -87,7 +99,7 @@ export default function App() {
   const weddingDate = new Date("2026-06-17T09:00:00");
 
   return (
-    <div className="font-sans text-stone-800 bg-brand-ivory overflow-hidden selection:bg-brand-beige-deep/20">
+    <div className="font-sans text-stone-800 bg-brand-ivory selection:bg-brand-beige-deep/20">
       <Toaster position="top-center" />
       
       {/* Premium Floating Music Toggle */}
@@ -102,41 +114,41 @@ export default function App() {
       </motion.button>
 
       <Hero guestName={guestName} inviteMessage={inviteMessage} />
-      
-      <div className="py-24 sm:py-32 bg-gradient-to-b from-brand-ivory via-white to-brand-ivory relative">
-        <CoupleDetails />
-      </div>
 
-      <div className="py-24 sm:py-32 bg-white relative">
-        <CeremonyDetails />
-      </div>
+      <Suspense fallback={<SectionFallback />}>
+        <div className="py-24 sm:py-32 bg-gradient-to-b from-brand-ivory via-white to-brand-ivory relative">
+          <CoupleDetails />
+        </div>
 
-      <div className="py-24 sm:py-32 bg-gradient-to-b from-white via-brand-champagne/30 to-brand-ivory relative">
-        <Location />
-      </div>
+        <div className="py-24 sm:py-32 bg-white relative">
+          <CeremonyDetails />
+        </div>
 
-      <div className="py-24 sm:py-32 bg-brand-ivory relative">
-        <Timeline />
-      </div>
+        <div className="py-24 sm:py-32 bg-gradient-to-b from-white via-brand-champagne/30 to-brand-ivory relative">
+          <Location loadMapImmediately={!isMobileDevice()} />
+        </div>
 
+        <div className="py-24 sm:py-32 bg-brand-ivory relative">
+          <Timeline />
+        </div>
 
-
-      <div className="py-24 sm:py-32 bg-gradient-to-b from-white to-brand-ivory relative">
+        <div className="py-24 sm:py-32 bg-gradient-to-b from-white to-brand-ivory relative">
           <div className="max-w-6xl mx-auto px-6 mb-16 text-center">
             <span className="text-brand-beige-deep uppercase tracking-[0.4em] text-[10px] sm:text-[11px] font-bold drop-shadow-sm">
               The Wait Is Almost Over
             </span>
           </div>
           <Countdown targetDate={weddingDate} />
-      </div>
+        </div>
 
-      <div className="py-24 sm:py-32 bg-brand-ivory relative">
-        <RSVPForm />
-      </div>
+        <div className="py-24 sm:py-32 bg-brand-ivory relative">
+          <RSVPForm />
+        </div>
 
-      <div className="py-24 sm:py-32 bg-gradient-to-b from-brand-ivory to-white relative mt-10">
-        <WishesSection />
-      </div>
+        <div className="py-24 sm:py-32 bg-gradient-to-b from-brand-ivory to-white relative mt-10">
+          <WishesSection />
+        </div>
+      </Suspense>
 
       {/* Elegant Footer Signature */}
       <footer className="py-12 bg-white border-t border-brand-beige/20 text-center relative overflow-hidden mt-10">

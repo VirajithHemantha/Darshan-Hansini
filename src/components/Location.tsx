@@ -1,8 +1,32 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import { MapPin, Navigation, Compass, Map } from 'lucide-react';
 
-export const Location: React.FC = () => {
+export const Location: React.FC<{ loadMapImmediately?: boolean }> = ({
+  loadMapImmediately = true,
+}) => {
+  const mapContainerRef = useRef<HTMLDivElement>(null);
+  const [showMap, setShowMap] = useState(loadMapImmediately);
+
+  useEffect(() => {
+    if (loadMapImmediately || showMap) return;
+
+    const node = mapContainerRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShowMap(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '200px' }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [loadMapImmediately, showMap]);
   const venueAddress = "Highlanders Eco & Adventure Resort, Pambahinna, Belihuloya";
   const mapUrl = "https://maps.google.com/maps?q=Highlanders%20Eco%20%26%20Adventure%20Resort,%20Belihuloya&t=&z=15&ie=UTF8&iwloc=&output=embed";
   const liveLocationUrl = "https://maps.app.goo.gl/fBvkJx9cpv8G8mim8";
@@ -80,27 +104,39 @@ export const Location: React.FC = () => {
         >
           <div className="absolute -inset-4 sm:-inset-6 border-[2px] border-brand-beige/30 rounded-[3rem] -z-10 translate-x-2 sm:translate-x-4 translate-y-2 sm:translate-y-4" />
           
-          <div className="w-full h-full rounded-[2.5rem] lg:rounded-[3rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.15)] border-[8px] sm:border-[12px] border-white relative group/map">
-            {/* Map Placeholder Masking for premium feel */}
-            <div className="absolute inset-0 bg-brand-beige/10 mix-blend-multiply pointer-events-none z-20 group-hover/map:opacity-0 transition-opacity duration-1000" />
-            
-            <iframe
-              title="Highlanders Eco & Adventure Resort Location"
-              src={mapUrl}
-              width="100%"
-              height="100%"
-              style={{ border: 0, filter: 'contrast(1.1) saturate(1.2)' }}
-              allowFullScreen={true}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              className="absolute inset-0 w-full h-full object-cover grayscale-[30%] group-hover/map:grayscale-0 transition-all duration-1000 ease-in-out"
-            />
+          <div
+            ref={mapContainerRef}
+            className="w-full h-full rounded-[2.5rem] lg:rounded-[3rem] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.15)] border-[8px] sm:border-[12px] border-white relative group/map bg-brand-champagne"
+          >
+            {showMap ? (
+              <iframe
+                title="Highlanders Eco & Adventure Resort Location"
+                src={mapUrl}
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen={true}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            ) : (
+              <button
+                type="button"
+                onClick={() => setShowMap(true)}
+                className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-brand-champagne text-stone-600 p-6"
+              >
+                <Map className="w-10 h-10 text-brand-beige-deep" />
+                <span className="text-xs uppercase tracking-[0.3em] font-bold">Tap to load map</span>
+              </button>
+            )}
 
-            {/* Decorative Location Pin Overlay */}
-            <div className="absolute top-6 right-6 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full border border-brand-beige/30 shadow-lg flex items-center gap-2 pointer-events-none z-30">
-              <Map className="w-4 h-4 text-brand-beige-deep animate-pulse" />
-              <span className="text-[9px] uppercase tracking-widest font-bold text-stone-600">Live Map</span>
-            </div>
+            {showMap && (
+              <div className="absolute top-6 right-6 bg-white/90 px-4 py-2 rounded-full border border-brand-beige/30 shadow-lg flex items-center gap-2 pointer-events-none z-30">
+                <Map className="w-4 h-4 text-brand-beige-deep" />
+                <span className="text-[9px] uppercase tracking-widest font-bold text-stone-600">Live Map</span>
+              </div>
+            )}
           </div>
         </motion.div>
 

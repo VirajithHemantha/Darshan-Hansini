@@ -48,6 +48,8 @@ export const CoupleDetails: React.FC = () => {
                 src="/1/groom.jpeg"
                 alt="Darshan"
                 className="w-full h-full object-cover"
+                loading="lazy"
+                decoding="async"
               />
               <div className="absolute inset-0 shadow-[inset_0_0_20px_rgba(0,0,0,0.1)] pointer-events-none" />
             </div>
@@ -80,6 +82,8 @@ export const CoupleDetails: React.FC = () => {
               }}
               alt="Darshan and Hansini"
               className="w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-105"
+              loading="lazy"
+              decoding="async"
             />
             {/* Elegant inner shadow & overlay */}
             <div className="absolute inset-0 shadow-[inset_0_0_40px_rgba(0,0,0,0.1)] pointer-events-none" />
@@ -113,6 +117,8 @@ export const CoupleDetails: React.FC = () => {
                 src="/1/bride.jpeg"
                 alt="Hansini"
                 className="w-full h-full object-cover"
+                loading="lazy"
+                decoding="async"
               />
               <div className="absolute inset-0 shadow-[inset_0_0_20px_rgba(0,0,0,0.1)] pointer-events-none" />
             </div>
