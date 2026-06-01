@@ -1,14 +1,81 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Heart, Music, Camera, Utensils, PartyPopper } from 'lucide-react';
+import { 
+  Coffee, 
+  Sparkles, 
+  Flame, 
+  FileText, 
+  Heart, 
+  Cake, 
+  Camera, 
+  PartyPopper, 
+  Users, 
+  Utensils 
+} from 'lucide-react';
 
 const events = [
-  { time: '09:00 AM', title: 'Arrival & Welcome', icon: Heart, desc: 'Guests gather at the scenic Highlanders Eco & Adventure Resort.' },
-  { time: '10:00 AM', title: 'Wedding Ceremony', icon: Music, desc: 'Exchange of vows and traditional marriage blessings.' },
-  { time: '11:30 AM', title: 'Photos & Greetings', icon: Camera, desc: 'Capturing beautiful memories and sharing wishes.' },
-  { time: '12:30 PM', title: 'Celebratory Feast', icon: Utensils, desc: 'A grand celebratory lunch and reception to toast the newlyweds.' },
-  { time: '04:00 PM', title: 'Farewell & Departure', icon: PartyPopper, desc: 'The couple departs to begin their new journey together.' },
+  { 
+    time: '9:00 AM – 9:15 AM', 
+    title: 'Guest Arrival & Welcome Refreshments', 
+    icon: Coffee, 
+    desc: 'Welcoming family and friends with fresh refreshments as they arrive.' 
+  },
+  { 
+    time: '9:15 AM – 9:20 AM', 
+    title: 'Couple Entrance', 
+    icon: Sparkles, 
+    desc: 'Welcoming the bride and groom as they make their grand entrance.' 
+  },
+  { 
+    time: '9:20 AM – 9.40 AM', 
+    title: 'Lighting of the Traditional Oil Lamp & Welcome Address', 
+    icon: Flame, 
+    desc: 'An auspicious start with the lighting of the lamp and opening address.' 
+  },
+  { 
+    time: '9.40 AM – 10.00 AM', 
+    title: 'Marriage Registration & Signing', 
+    icon: FileText, 
+    desc: 'Official signing of the wedding registry and marriage documents.' 
+  },
+  { 
+    time: '10.00 AM – 10.20 AM', 
+    title: 'Exchange of Rings', 
+    icon: Heart, 
+    desc: 'The couples exchange rings and solemnize their vows.' 
+  },
+  { 
+    time: '10.20 AM – 10.35 AM', 
+    title: 'Wedding Cake Cutting Ceremony', 
+    icon: Cake, 
+    desc: 'Sweet celebration as the couple cuts their wedding cake together.' 
+  },
+  { 
+    time: '10.35 AM – 11.15 AM', 
+    title: 'Family & Group Photo Session', 
+    icon: Camera, 
+    desc: 'Capturing memories with family and group photography sessions.' 
+  },
+  { 
+    time: '11.15 AM – 11.30 AM', 
+    title: 'Family Blessings & Toast', 
+    icon: PartyPopper, 
+    desc: 'Receiving blessings from the elders and celebrating with a wedding toast.' 
+  },
+  { 
+    time: '11.30 AM – 12.00 PM', 
+    title: 'Guest Interaction & Photos', 
+    icon: Users, 
+    desc: 'Mingle with guests and capture beautiful individual and group shots.' 
+  },
+  { 
+    time: '12.00 PM - 4.00 PM', 
+    title: 'Lunch Buffet & DJ Event', 
+    icon: Utensils, 
+    desc: 'A festive buffet spread followed by music, dancing, and celebration.' 
+  },
 ];
+
 
 export const Timeline: React.FC = () => {
   return (
